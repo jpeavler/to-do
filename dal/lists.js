@@ -86,7 +86,7 @@ const addList = (list) => {
 }
 
 //UPDATE Patch function. Primarily used to toggle complete bool
-const updateListValues = (list) => {
+const updateListValues = (id, list) => {
     const myPromise = new Promise((resolve, reject) => {
         MongoClient.connect(url, settings, function(err, client) {
             if(err){
@@ -96,7 +96,7 @@ const updateListValues = (list) => {
                 const db = client.db(dbName);
                 const collection = db.collection(colName);
                 try{
-                    const _id = new ObjectID(list._id);
+                    const _id = new ObjectID(id);
                     collection.updateOne({_id},
                         {$set: {...list}},
                         function (err, data) {
