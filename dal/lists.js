@@ -11,7 +11,27 @@ const colName = 'to_do_lists';
 
 //READ functions
 const getLists = () => {
-
+    const myPromise = new Promise((resolve, reject) => {
+        MongoClient.connect(url, settings, function(err, client) {
+            if(err) {
+                reject(err);
+            }else {
+                console.log("Connected to DB for READ");
+                const db = client.db(dbName);
+                const collection = db.collection(colName);
+                collection.find({}).toArray(function(err, docs) {
+                    if(err){
+                        reject(err);
+                    }else{
+                        console.log("Found the To Do Lists");
+                        resolve(docs);
+                        client.close();
+                    }
+                });
+            }
+        });
+    });
+    return myPromise;
 }
 
 const getListByID = (id) => {
