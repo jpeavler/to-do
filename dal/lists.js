@@ -20,9 +20,9 @@ const getLists = () => {
                 const db = client.db(dbName);
                 const collection = db.collection(colName);
                 collection.find({}).toArray(function(err, docs) {
-                    if(err){
+                    if(err) {
                         reject(err);
-                    }else{
+                    }else {
                         console.log("Found the To Do Lists");
                         resolve(docs);
                         client.close();
@@ -37,7 +37,7 @@ const getLists = () => {
 const getListByID = (id) => {
     const myPromise = new Promise((resolve, reject) => {
         MongoClient.connect(url, settings, async function(err, client) {
-            if(err){
+            if(err) {
                 reject(err);
             }else {
                 console.log("Connected to DB for READ by ID");
@@ -63,7 +63,26 @@ const getListByID = (id) => {
 
 //CREATE function
 const addList = (list) => {
-
+    const myPromise = new Promise((resolve, reject) => {
+        MongoClient.connect(url, settings, async function(err, client) {
+            if(err) {
+                reject(err);
+            }else {
+                console.log("Connected to DB for CREATE");
+                const db = client.db(dbName);
+                const collection = db.collection(coName);
+                collection.insertOne(list, (err, result) => {
+                    if(err) {
+                        reject(err);
+                    }else {
+                        resolve(result.ops[0]);
+                        client.close();
+                    }
+                });
+            }
+        });
+    });
+    return myPromise;
 }
 
 //UPDATE Patch function. Primarily used to toggle complete bool
