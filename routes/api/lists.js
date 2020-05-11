@@ -39,7 +39,22 @@ router.post('/', async function (req, res) {
     }catch(err) {
         if(err.error) {
             res.status(400).send(err);
-        }else{
+        }else {
+            console.log(err);
+            res.status(500).send('Internal server issue, check logs');
+        }
+    }
+});
+
+//Patch Router
+router.patch('/:id', async function (req, res) {
+    try{
+        const list = await updateListValues(req.params.id, req.body);
+        res.send(list);
+    }catch(err) {
+        if(err.error) {
+            res.status(400).send(err);
+        }else {
             console.log(err);
             res.status(500).send('Internal server issue, check logs');
         }
