@@ -70,7 +70,7 @@ const addList = (list) => {
             }else {
                 console.log("Connected to DB for CREATE");
                 const db = client.db(dbName);
-                const collection = db.collection(coName);
+                const collection = db.collection(colName);
                 collection.insertOne(list, (err, result) => {
                     if(err) {
                         reject(err);
