@@ -86,8 +86,45 @@ const addList = (list) => {
 }
 
 //UPDATE Patch function. Primarily used to toggle complete bool
-const updateList = (list) => {
-
+const updateListValues = (list) => {
+    const myPromise = new Promise((resolve, reject) => {
+        MongoClient.connect(url, settings, function(err, client) {
+            if(err){
+                reject(err);
+            }else{
+                console.log("Connected to DB for UPDATE: Patch");
+                const db = client.db(dbName);
+                const collection = db.collection(colName);
+                try{
+                    const _id = new ObjectID(list._id);
+                    collection.updateOne({_id},
+                        {$set: {...list}},
+                        function (err, data) {
+                            if(err) {
+                                reject(err);
+                            }else {
+                                if(data.result.n > 0) {
+                                    collection.find({_id}).toArray(
+                                        function (err, docs) {
+                                            if(err) {
+                                                reject(err);
+                                            }else {
+                                                resolve(docs[0]);
+                                            }
+                                        }
+                                    );
+                                }else {
+                                    resolve({error: "Nothing Happened"});
+                                }
+                            }
+                        });
+                }catch(err) {
+                    reject({error: "ID has to be in ObjectID format"})
+                }
+            }
+        });
+    });
+    return myPromise;
 }
 
 //May consider adding additional UPDATE and DELETE functions.
@@ -96,5 +133,5 @@ module.exports = {
     getLists,
     getListByID,
     addList,
-    updateList
+    updateListValues
 }
