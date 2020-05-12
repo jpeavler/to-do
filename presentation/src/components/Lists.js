@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
+import List from './List';
 
 const Lists = () => {
-    const [lists, setLists] = useState([{}]);
+    const [lists, setLists] = useState([]);
 
     useEffect(() =>{
         getLists();
@@ -14,13 +15,13 @@ const Lists = () => {
     }
 
     const displayLists = lists.map((list) => {
-        return <div>List Name: {list.name}</div>
+        return <List key = {list._id} 
+                list={list}/>
     });
 
     return (
         <div className='Lists'>
             {displayLists}
-            <h1>Hello World</h1>
         </div>
     )
 }
