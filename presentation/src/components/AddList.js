@@ -9,7 +9,6 @@ const AddList = ({refresh}) => {
         event.preventDefault();
         const tempArr = listItems;   //toDo: push List Items onto this
         setLItems(tempArr);
-        const complete = false; //will be used to make all list items not complete when made
         const newList = {name: listName, desc: listDesc, list_items: listItems};
         fetch(`${process.env.REACT_APP_API_URL}/api/lists`, {
             method: 'POST',
@@ -29,22 +28,28 @@ const AddList = ({refresh}) => {
         setLItems(tempArr);
     }
 
+    const handleRemove = (index) => {
+        setLItems(listItems.filter((s, _index) => index !== _index));
+    }
+
     const renderListItemForm = () => {
         return listItems.map((listItem, index) => {
             return(
                 <span>
-                    <input value={listItems[index].name} 
+                    <input value={listItem.name} 
                         type="text" 
                         onChange={({target}) => handleLIChange("name", target.value, index)} 
                         placeholder={`List Item #${index +1} Name`} required/>
-                    <textarea value={listItems[index].desc} 
+                    <textarea value={listItem.desc} 
                         type="text" 
                         onChange={({target}) => handleLIChange("desc", target.value, index)} 
                         placeholder={`List Item #${index + 1} Description`}/>
-                    <input value={listItems[index].due} 
+                    <input value={listItem.due} 
                         type="date" 
                         onChange={({target}) => handleLIChange("due", target.value, index)} 
                         placeholder="Due Date"/>
+                        <button type="button" 
+                        onClick={() => handleRemove(index)}>X</button>
                 </span>
             )
         });
