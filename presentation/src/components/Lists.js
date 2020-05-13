@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import List from './List';
+import AddList from './AddList';
 
 const Lists = () => {
     const [lists, setLists] = useState([]);
@@ -21,6 +22,7 @@ const Lists = () => {
 
     return (
         <div className='Lists'>
+            <AddList refresh={getLists}/>
             {displayLists}
         </div>
     )
