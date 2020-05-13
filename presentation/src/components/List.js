@@ -2,11 +2,20 @@ import React from 'react';
 
 const List = ({list}) => {
     const displayListItems = list.list_items.map((item, index) => {
-
+        let checkOff;
+        if(!item.complete){
+            checkOff = <button>Check off</button>
+        }else {
+            checkOff = <button>Restore</button>
+        }
         return(
             <li key = {index}>
-                {item.name}<button>Complete</button>
-                {item.due}
+                {item.name}
+                {checkOff}
+                <ul>
+                    <li>{item.desc}</li>
+                    <li>{item.due}</li>
+                </ul>
             </li>
         );
     });
