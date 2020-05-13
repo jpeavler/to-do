@@ -4,9 +4,6 @@ const AddList = ({refresh}) => {
     const [listName, setLName] = useState('');
     const [listDesc, setLDesc] = useState('');
     const [listItems, setLItems] = useState([]);
-    const [listItemName, setLIName] = useState([]);
-    const [listItemDesc, setLIDesc] = useState([]);
-    const [listItemDue, setLIDue] = useState([]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -21,26 +18,35 @@ const AddList = ({refresh}) => {
         }).then(refresh)
             .then(() => setLName(''))
             .then(() => setLDesc(''))
-            .then(() => setLItems([]))
-            .then(() => setLIName([]))
-            .then(() => setLIDesc([]));
+            .then(() => setLItems([]));
     }
+
+    const handleLIChange = (key, value, index) => {
+        let tempArr = listItems;
+        let newListItem = tempArr[index];
+        newListItem[key] = value;
+        newListItem.complete = false;
+        setLItems(tempArr);
+    }
+
     const renderListItemForm = () => {
-        listItemForm = listItems.map((listItem, index) => {
-            <form>
-                <input value={listItemName} 
-                    type="text" 
-                    onChange={({target}) => setLIName(target.value)} 
-                    placeholder={`List Item #${index +1} Name`} required/>
-                <textarea value={listItemDesc} 
-                    type="text" 
-                    onChange={({target}) => setLIDesc(target.value)} 
-                    placeholder={`List Item #${index + 1} Description`}/>
-                <input value={listItemDue} 
-                    type="date" 
-                    onChange={({target}) => setLIDue(target.value)} 
-                    placeholder="Due Date"/>
-            </form>
+        return listItems.map((listItem, index) => {
+            return(
+                <span>
+                    <input value={listItems[index].name} 
+                        type="text" 
+                        onChange={({target}) => handleLIChange("name", target.value, index)} 
+                        placeholder={`List Item #${index +1} Name`} required/>
+                    <textarea value={listItems[index].desc} 
+                        type="text" 
+                        onChange={({target}) => handleLIChange("desc", target.value, index)} 
+                        placeholder={`List Item #${index + 1} Description`}/>
+                    <input value={listItems[index].due} 
+                        type="date" 
+                        onChange={({target}) => handleLIChange("due", target.value, index)} 
+                        placeholder="Due Date"/>
+                </span>
+            )
         });
     }
     return(
@@ -54,7 +60,8 @@ const AddList = ({refresh}) => {
                     type="text" 
                     onChange={({target}) => setLDesc(target.value)} 
                     placeholder="List Description"/>
-            <button onClick={() => setLItems(listItems.concat(['']))}>+ Add Another List Item</button>
+            <button type="button" onClick={() => setLItems(listItems.concat([{}]))}>+ Add Another List Item</button>
+            {renderListItemForm()}
             <input type="Submit" value="Create List"/>
         </form>
     )
