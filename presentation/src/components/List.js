@@ -14,15 +14,17 @@ const List = ({list, refresh}) => {
 
     let displayListItems = list.list_items.map((item, index) => {
         let checkOff;
+        let completed;
         if(!item.complete){
             checkOff = <button onClick={() => markComplete(list._id, index, true)}>Check off</button>
         }else {
             checkOff = <button onClick={() => markComplete(list._id, index, false)}>Restore</button>
+            completed = "Complete!"
         }
         return(
             <li key = {index}>
                 {item.name}
-                {checkOff}
+                {checkOff}{completed}
                 <ul>
                     <li>{item.desc}</li>
                     <li>{item.due}</li>
