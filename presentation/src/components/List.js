@@ -31,7 +31,7 @@ const List = ({list, refresh}) => {
         );
     });
     return(
-        <div>
+        <div className="List">
             <h2>{list.name}</h2>
             <p>{list.desc}</p>
             <ul>{displayListItems}</ul>
