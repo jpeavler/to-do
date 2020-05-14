@@ -35,7 +35,7 @@ const AddList = ({refresh}) => {
     const renderListItemForm = () => {
         return listItems.map((listItem, index) => {
             return(
-                <span>
+                <span key={index}>
                     <input value={listItem.name} 
                         type="text" 
                         onChange={({target}) => handleLIChange("name", target.value, index)} 
@@ -67,7 +67,7 @@ const AddList = ({refresh}) => {
                     placeholder="List Description"/>
             <button type="button" onClick={() => setLItems(listItems.concat([{}]))}>+ Add Another List Item</button>
             {renderListItemForm()}
-            <input type="Submit" value="Create List"/>
+            <input type="Submit" defaultValue="Create List"/>
         </form>
     )
 }
