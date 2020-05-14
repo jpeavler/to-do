@@ -17,7 +17,8 @@ const Lists = () => {
 
     const displayLists = lists.map((list) => {
         return <List key = {list._id} 
-                list={list}/>
+                list={list} 
+                refresh={getLists}/>
     });
 
     return (

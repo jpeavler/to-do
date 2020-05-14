@@ -1,12 +1,23 @@
 import React from 'react';
 
-const List = ({list}) => {
+const List = ({list, refresh}) => {
+    let markComplete = (id, index, completeStatus) => {
+        let tempList = list;
+        tempList.list_items[index].complete = completeStatus;
+        delete tempList._id;    //in order to make a patch request, the id has to be removed
+        fetch(`${process.env.REACT_APP_API_URL}/api/lists/${id}`, {
+            method: 'PATCH',
+            headers: {'Content-Type' : 'application/json'},
+            body: JSON.stringify(tempList)
+        }).then(refresh);
+    }
+
     let displayListItems = list.list_items.map((item, index) => {
         let checkOff;
         if(!item.complete){
-            checkOff = <button>Check off</button>
+            checkOff = <button onClick={() => markComplete(list._id, index, true)}>Check off</button>
         }else {
-            checkOff = <button>Restore</button>
+            checkOff = <button onClick={() => markComplete(list._id, index, false)}>Restore</button>
         }
         return(
             <li key = {index}>
