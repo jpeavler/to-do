@@ -44,6 +44,7 @@ const AddList = ({refresh}) => {
                         type="text" 
                         onChange={({target}) => handleLIChange("desc", target.value, index)} 
                         placeholder={`List Item #${index + 1} Description`}/>
+                    <label>Due Date</label>
                     <input value={listItem.due} 
                         type="date" 
                         onChange={({target}) => handleLIChange("due", target.value, index)} 
@@ -65,7 +66,7 @@ const AddList = ({refresh}) => {
                     type="text" 
                     onChange={({target}) => setLDesc(target.value)} 
                     placeholder="List Description"/>
-            <button type="button" onClick={() => setLItems(listItems.concat([{}]))}>+ Add Another List Item</button>
+            <button type="button" onClick={() => setLItems(listItems.concat([{}]))}>+ Add List Item</button>
             {renderListItemForm()}
             <input type="Submit" defaultValue="Create List"/>
         </form>
